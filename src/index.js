@@ -1,53 +1,96 @@
-document.addEventListener("DOMContentLoaded",()=>
-  {
-      let background = document.body;
-      let brightness = document.querySelector("#brightnessImage");
+document.addEventListener("DOMContentLoaded", () => {
+  //brigtness
+  const background = document.body;
+  const brightness = document.querySelector("#brightnessImage");
+  if (brightness) {
+      brightness.addEventListener("click", () => {
+          const isDark = brightness.src.includes("moon-stars-fill");
+          brightness.src = isDark ? 
+              "components/brightness-high-fill.png" : 
+              "components/moon-stars-fill.png";
+          background.style.backgroundColor = isDark ? "#e4edf4" : "#10131c";
+          background.style.color = isDark ? "#10131c" : "#e4edf4";
+      });
+  }
+  const main = document.querySelector("#main");
+  let showAll = false;
+  let eventsData = [];
+  const cardsPerPage = 6;
+
+  main.style.display = "grid";
+  main.style.gridTemplateColumns = "repeat(2, 1fr)";
+  main.style.gap = "2rem";
+  main.style.padding = "2rem";
+
+  const popup = document.createElement("div");
+  popup.style.cssText = "position:fixed;display:none;z-index:100;";
+  document.body.appendChild(popup);
+
+  function handleHover(event) {
+      if (event.target.tagName === "IMG") {
+          popup.style.display = "block";
+          popup.style.left = `${e.pageX + 15}px`;
+          popup.style.top = `${e.pageY + 15}px`;
+          popup.innerHTML = `<img src="${e.target.src}" style="max-width:300px;">`;
+      }
+  }
+
+  function hidePopup() {
+      popup.style.display = "none";
+  }
+//Displays the cards 
+  function renderCards() {
+      main.innerHTML = "";
+      const cards = showAll ? eventsData.events : eventsData.events.slice(0, cardsPerPage);
       
-      if (brightness) {
-        console.log("hello")
-        brightness.addEventListener("click", (event) => {
-          if (brightness.getAttribute('src').endsWith("components/brightness-high-fill.png")) {
-            brightness.src = "components/moon-stars-fill.png";
-            background.style.backgroundColor = "#10131c";
-          } else {
-            brightness.src = "components/brightness-high-fill.png";
-            background.style.backgroundColor = "#e4edf4";
-          }
-        });
-      } 
-    /*let imageScroll=document.querySelectorAll(".scroll");
-    imageScroll.addEventListener("mouseover",(event)=>{
-      imageScroll.boxShadow ="2px 2px 8px #4d8fc8a"   
-    })*/
-    let mainDiv=document.querySelector("#main"),i=0;
-    fetch("www.chess.com.json")
-    .then(response=>response.json())
-    .then((data)=>{
-      console.log(data)
-      data.events.forEach((adata)=>{
-        let newDiv=document.createElement("div");
-        let btn =document.createElement("button");
-        btn.innerHTML="<big>▽</big>"
-        btn.addEventListener("click",(event)=>{
-          if(btn.textContent==="▽"){
-            btn.innerHTML="<big>△</big>";
-            let childDiv=document.createElement("div");
-          }
-          else if(btn.textContent==="△"){
-            btn.innerHTML="<big>▽</big>";
-          }
-        })
-        newDiv.innerHTML=`<img src="${data.images[i]}" height="100" width="156"><p>${adata}</p><br>`
-        //newDiv.appendChild(btn);
-        btn.style.height="30px";
-        btn.style.width="30px";
-        btn.style.backgroundColor="#2c2a29"
-        newDiv.setAttribute("class","box")
-        mainDiv.appendChild(newDiv);
-        i+=1;
-   })
-    .catch((error)=>{
-      alert("An error occured")
-    })
- })
-})
+      cards.forEach((event, i) => {
+          const card = document.createElement("div");
+          card.className = "box";
+          card.innerHTML = `
+              <img src="${eventsData.images[i]}" 
+                   alt="${event}" 
+                   height=130px,width=261px;">
+              <p>${event}</p>
+          `;
+          card.querySelector("img").addEventListener("mouseover", handleHover);
+          card.querySelector("img").addEventListener("mouseout", hidePopup);
+          main.appendChild(card);
+      });
+  }
+//The more less button
+  function createToggleButton() {
+      const btn = document.createElement("button");
+      btn.id = "loadMore";
+      btn.textContent = "More";
+      btn.style.cssText = `
+          display: block;
+          margin: 2rem auto;
+          padding: 0.8rem 2rem;
+          background: #4d8fc8;
+          color: white;
+          border: none;
+          border-radius: 25px;
+          cursor: pointer;
+      `;
+      
+      btn.addEventListener("click", () => {
+          showAll = !showAll;
+          btn.textContent = showAll ? "Less" : "More";
+          renderCards();
+      });
+      
+      document.querySelector("section").appendChild(btn);
+  }
+
+  fetch("www.chess.com.json")
+      .then(response => response.json())
+      .then(data => {
+          eventsData = data;
+          renderCards();
+          createToggleButton();
+      })
+      .catch(error => {
+          console.error("Error loading data:", error);
+          main.innerHTML = `<p class="error">Failed to load events. Please refresh the page.</p>`;
+      });
+});

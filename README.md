@@ -1,33 +1,18 @@
-# ChessArena.github.io
-# Chess Arena
-# Fetch POST Request Lab
-
-## Author
-Victor Biwott
-
-## Description
-A JavaScript application demonstrating asynchronous POST requests using `fetch()`, persisting data to a JSON Server, and dynamically updating the DOM. Built for educational purposes.
-
-## Setup
-1. Install JSON Server: `npm install -g json-server`
-2. Start the server: `json-server --watch db.json`
-3. Open `index.html` in a browser.
+# Chess Arena♟️
 
 
-## License
-MIT License.
-## Overview
-A web platform that scrapes and displays upcoming chess events from Chess.com, helping players stay informed about tournaments, matches, and workshops.
-
-##Future Improvements
-  --**Add user accounts to save preferences.
-  --**Integrate live tournament scores.
-
+**Author**: Victor Biwott
+**Live Demo**: [https://biwott-v.github.io/chess-arena]
 
 ## Features
+-Display upto date information about upcoming tournaments and events
+-Data Scraped from chess.com using Cheerio
 
-    --**Dislpay upto date upcoming Event and Tournaments
-**Clone the repo**:
-   ```bash
-   git clone git@github.com:Biwott-kim/ChessArena.github.io.git
+## Future Impovements
+-Live feed on upcoming events and competitions
+-Live Chess Tv
 
+## Setup
+1. Clone repository:
+```bash
+git clone https://github.com/yourusername/chess-arena.git
