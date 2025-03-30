@@ -1,7 +1,7 @@
 html{
   scroll-behavior: smooth;
 }
-  nav{
+  /*nav{
   border-radius:25px;
   padding:15px;
   background-color:#181c25;
@@ -13,6 +13,17 @@ html{
   margin-bottom: 30px;
   padding:12px;
   margin-right:120px;
+  opacity: 1;
+}*/
+nav {
+  border-radius: 25px;
+  padding: 15px;
+  background-color: #181c25;
+  list-style: none;
+  height: 40px;
+  color: #a4b8d3;
+  margin-bottom: 30px;
+  padding: 12px;
   opacity: 1;
 }
 h1{
